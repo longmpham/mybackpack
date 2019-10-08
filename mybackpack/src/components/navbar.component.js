@@ -17,12 +17,12 @@ export default class Navbar extends Component {
             </li>
             <li className="navbar-item">
               <Link to="/create" className="nav-link">
-                Backpacks
+                Create Item
               </Link>
             </li>
             <li className="navbar-item">
               <Link to="/user" className="nav-link">
-                Create Item
+                Create User
               </Link>
             </li>
           </ul>

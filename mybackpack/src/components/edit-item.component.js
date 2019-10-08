@@ -3,34 +3,31 @@ import axios from "axios";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
-export default class EditExercise extends Component {
+export default class EditItem extends Component {
   constructor(props) {
     super(props);
 
     this.onChangeUsername = this.onChangeUsername.bind(this);
     this.onChangeDescription = this.onChangeDescription.bind(this);
-    this.onChangeDuration = this.onChangeDuration.bind(this);
-    this.onChangeDate = this.onChangeDate.bind(this);
+    this.onChangeWeight = this.onChangeWeight.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
 
     this.state = {
       username: "",
       description: "",
-      duration: 0,
-      date: new Date(),
+      weight: 0,
       users: []
     };
   }
 
   componentDidMount() {
     axios
-      .get("http://localhost:5000/exercises/" + this.props.match.params.id)
+      .get("http://localhost:5000/items/" + this.props.match.params.id)
       .then(response => {
         this.setState({
           username: response.data.username,
           description: response.data.description,
-          duration: response.data.duration,
-          date: new Date(response.data.date)
+          weight: response.data.weight,
         });
       })
       .catch(function(error) {
@@ -63,34 +60,27 @@ export default class EditExercise extends Component {
     });
   }
 
-  onChangeDuration(e) {
+  onChangeWeight(e) {
     this.setState({
-      duration: e.target.value
-    });
-  }
-
-  onChangeDate(date) {
-    this.setState({
-      date: date
+      weight: e.target.value
     });
   }
 
   onSubmit(e) {
     e.preventDefault();
 
-    const exercise = {
+    const item = {
       username: this.state.username,
       description: this.state.description,
-      duration: this.state.duration,
-      date: this.state.date
+      weight: this.state.weight,
     };
 
-    console.log(exercise);
+    console.log(item);
 
     axios
       .post(
-        "http://localhost:5000/exercises/update/" + this.props.match.params.id,
-        exercise
+        "http://localhost:5000/items/update/" + this.props.match.params.id,
+        item
       )
       .then(res => console.log(res.data));
 
@@ -100,7 +90,7 @@ export default class EditExercise extends Component {
   render() {
     return (
       <div>
-        <h3>Edit Exercise Log</h3>
+        <h3>Edit Item Log</h3>
         <form onSubmit={this.onSubmit}>
           <div className="form-group">
             <label>Username: </label>
@@ -131,15 +121,15 @@ export default class EditExercise extends Component {
             />
           </div>
           <div className="form-group">
-            <label>Duration (in minutes): </label>
+            <label>Weight (in grams): </label>
             <input
               type="text"
               className="form-control"
-              value={this.state.duration}
-              onChange={this.onChangeDuration}
+              value={this.state.weight}
+              onChange={this.onChangeWeight}
             />
           </div>
-          <div className="form-group">
+          {/* <div className="form-group">
             <label>Date: </label>
             <div>
               <DatePicker
@@ -147,12 +137,12 @@ export default class EditExercise extends Component {
                 onChange={this.onChangeDate}
               />
             </div>
-          </div>
+          </div> */}
 
           <div className="form-group">
             <input
               type="submit"
-              value="Edit Exercise Log"
+              value="Edit Item Log"
               className="btn btn-primary"
             />
           </div>
